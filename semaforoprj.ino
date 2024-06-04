@@ -1,3 +1,13 @@
+#include <WiFi.h>
+#include <WiFiClient.h>
+#include <WebServer.h>
+#include <string.h>
+const char *ssid = "SemaforoGRAI";
+const char *password = "87654321";
+IPAddress local_IP(192, 168, 4, 22);
+IPAddress gateway(192, 168, 4, 9);
+IPAddress subnet(255, 255, 255, 0);
+
 // Definição dos pinos dos LEDs
 const int ledVerde1 = 25;
 const int ledVerde2 = 14;
@@ -62,6 +72,14 @@ void setup() {
   pinMode(ledAmarelo2, OUTPUT);
   pinMode(ledVermelho1, OUTPUT);
   pinMode(ledVermelho2, OUTPUT);
+  
+  Serial.begin(115200);
+  Serial.print("Configurando AP .....");
+  Serial.println(WiFi.softAPConfig(local_IP, gateway, subnet)? "OK" : "Erro");
+  Serial.print("Iniciando o WiFi ......");
+  Serial.println(WiFi.softAP(ssid, password));
+  Serial.print("Endereço IP");
+  Serial.println(WiFi.softAPIP());
 }
 
 void loop() {
